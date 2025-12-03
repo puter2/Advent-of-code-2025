@@ -8,5 +8,12 @@ def day2(path):
             result.append((int(start), int(end)))
     return result
 
+def day3(path):
+    banks = []
+    with open(path) as file:
+        for line in file.readlines():
+            banks.append(line.strip())
+    return banks
+
 if __name__=='__main__':
-    day2('day2/testinput.txt')
+    print(day3('day3/testinput.txt'))
