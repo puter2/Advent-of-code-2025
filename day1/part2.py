@@ -1,5 +1,4 @@
 from math import floor
-from traceback import print_tb
 
 
 def turn_left(position, number):
