@@ -15,5 +15,15 @@ def day3(path):
             banks.append(line.strip())
     return banks
 
+def day4(path):
+    diagram = []
+    with open(path) as file:
+        for line in file.readlines():
+            row=[]
+            for c in line.strip():
+                row.append(c)
+            diagram.append(row)
+    return diagram
+
 if __name__=='__main__':
-    print(day3('day3/testinput.txt'))
+    print(day4('day4/testinput.txt'))
