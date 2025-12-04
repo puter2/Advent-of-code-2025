@@ -25,5 +25,18 @@ def day4(path):
             diagram.append(row)
     return diagram
 
+def day4_alt(path):
+    diagram = set()
+    with open(path) as file:
+        y=-1
+        for line in file.readlines():
+            y+=1
+            x=0
+            for c in line.strip():
+               if c=='@':
+                   diagram.add((x,y))
+               x+=1
+    return diagram
+
 if __name__=='__main__':
-    print(day4('day4/testinput.txt'))
+    print(day4_alt('day4/testinput.txt'))
