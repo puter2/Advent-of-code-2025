@@ -38,5 +38,23 @@ def day4_alt(path):
                x+=1
     return diagram
 
+def day5(path):
+    ranges = []
+    available = []
+    with open(path) as file:
+        MODE = "RANGES"
+        for line in file.readlines():
+            if MODE == "RANGES":
+                if line == '\n':
+                    MODE = "AVAILABLE IDS"
+                    continue
+                start = line.split('-')[0]
+                end = line.split('-')[1].strip()
+                ranges.append((int(start), int(end)))
+            else:
+                available.append(int(line.strip()))
+    return ranges, available
+
+
 if __name__=='__main__':
-    print(day4_alt('day4/testinput.txt'))
+    print(day5('day5/testinput.txt'))
