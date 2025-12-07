@@ -66,6 +66,10 @@ def day6(path):
             data.append(formatted_line.split())
     return data
 
+def day6_part2(path):
+    with open(path) as file:
+        data = file.read(-1)
+    return data
 
 if __name__=='__main__':
     print(day6('day6/testinput.txt'))
