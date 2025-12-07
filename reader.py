@@ -1,3 +1,5 @@
+import re
+
 def day2(path):
     result = []
     with open(path) as file:
@@ -55,6 +57,15 @@ def day5(path):
                 available.append(int(line.strip()))
     return ranges, available
 
+def day6(path):
+    data = []
+    with open(path) as file:
+        for line in file.readlines():
+            #delete multiple spaces
+            formatted_line = re.sub(r'\s+',' ', line).strip()
+            data.append(formatted_line.split())
+    return data
+
 
 if __name__=='__main__':
-    print(day5('day5/testinput.txt'))
+    print(day6('day6/testinput.txt'))
