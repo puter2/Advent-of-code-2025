@@ -1,5 +1,6 @@
 import re
 
+
 def day2(path):
     result = []
     with open(path) as file:
@@ -71,5 +72,21 @@ def day6_part2(path):
         data = file.read(-1)
     return data
 
+def day7(path):
+    splitters = set()
+    start = ()
+    with open(path) as file:
+        for line_num, line in enumerate(file.readlines()):
+            for char_num, char in enumerate(line):
+                if char=='S':
+                    start = (char_num, line_num)
+                elif char=='^':
+                    splitters.add((char_num, line_num))
+        height = line_num
+
+    return splitters, start, height
+
+
+
 if __name__=='__main__':
-    print(day6('day6/testinput.txt'))
+    print(day7('day7/testinput.txt'))
