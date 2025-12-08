@@ -1,4 +1,5 @@
 import re
+from readline import append_history_file
 
 
 def day2(path):
@@ -86,7 +87,17 @@ def day7(path):
 
     return splitters, start, height
 
-
+def day8(path):
+    boxes = []
+    with open(path) as file:
+        for line in file.readlines():
+            cords = line.split(',')
+            boxes.append(
+                (int(cords[0].strip()),
+                 int(cords[1].strip()),
+                 int(cords[2].strip()))
+            )
+    return boxes
 
 if __name__=='__main__':
-    print(day7('day7/testinput.txt'))
+    print(day8('day8/testinput.txt'))
