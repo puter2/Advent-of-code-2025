@@ -99,5 +99,17 @@ def day8(path):
             )
     return boxes
 
+def day9(path):
+    red_tiles = []
+    with open(path) as file:
+        for line in file.readlines():
+            cords = line.split(',')
+            red_tiles.append(
+                (int(cords[0].strip()),
+                 int(cords[1].strip())
+                 )
+            )
+    return red_tiles
+
 if __name__=='__main__':
-    print(day8('day8/testinput.txt'))
+    print(day9('day9/testinput.txt'))
