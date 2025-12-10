@@ -31,15 +31,31 @@ def find_valid_borders(all_tiles):
 directions = [(1,0), (-1,0), (0,1), (0,-1)]
 
 def fill_outside(outside, borders, start_x, start_y, min_y, max_y, min_x, max_x):
-    if (start_x, start_y) in outside:
-        return
     outside.add((start_x, start_y))
+    to_check = set()
     for x, y in directions:
         new_x, new_y = start_x + x, start_y + y
-        if (new_x, new_y) not in borders and (new_x, new_y) not in outside and min_y< new_y <max_y and min_x< new_x <max_x:
-            fill_outside(outside, borders, new_x, new_y, min_y, max_y, min_x, max_x)
+        if (
+                (new_x, new_y) not in borders and
+                (new_x,new_y) not in outside and
+                min_y < new_y < max_y and
+                min_x < new_x < max_x
+        ):
+            to_check.add((new_x, new_y))
 
-
+    while to_check:
+        print(len(outside), len(to_check))
+        point = to_check.pop()
+        outside.add(point)
+        for x, y in directions:
+            new_x, new_y = point[0] + x, point[1] + y
+            if (
+                    (new_x, new_y) not in borders and
+                    (new_x, new_y) not in outside and
+                    min_y < new_y < max_y and
+                    min_x < new_x < max_x
+            ):
+                to_check.add((new_x, new_y))
 
 def find_outside(borders:set):
     #bounds
@@ -47,12 +63,58 @@ def find_outside(borders:set):
     min_width = min(borders, key=lambda a: a[0])[0]
     max_width = max(borders, key=lambda a: a[0])[0]
     max_height = max(borders, key=lambda a: a[1])[1]
+    print(max_height, max_width, min_height, min_width)
     starting_point = (min_width-1, min_height-1)
     outside = set()
     fill_outside(outside, borders, starting_point[0], starting_point[1], min_height-2, max_height+2, min_width-2, max_width+2)
     return outside
 
-def is_rectangle_inside(outside, corner1, corner2):
+def find_inside(borders:set):
+    # bounds
+    min_height = min(borders, key=lambda a: a[1])[1]
+    min_width = min(borders, key=lambda a: a[0])[0]
+    max_height = max(borders, key=lambda a: a[1])[1]
+    point_inside = find_first_point_inside(borders, min_width, min_height, max_height)
+    inside = {point_inside}
+    fill_inside(inside, borders, point_inside)
+    return inside
+
+def fill_inside(inside:set, borders:set, start):
+    to_check = set()
+    start_x, start_y = start
+    for x, y in directions:
+        new_x, new_y = start_x + x, start_y + y
+        if (new_x, new_y) not in borders:
+            to_check.add((new_x, new_y))
+    while to_check:
+        print(len(to_check), len(inside))
+        point = to_check.pop()
+        inside.add(point)
+        for x, y in directions:
+            new_x, new_y = point[0] + x, point[1] + y
+            if (
+                    (new_x, new_y) not in borders and
+                    (new_x, new_y) not in inside
+            ):
+                to_check.add((new_x, new_y))
+
+
+
+def find_first_point_inside(borders, left_border, bottom_border, top_border):
+    #idea: go top to bottom, when you find singular wall, then next point must be inside, if double wall, abandon
+    current_x = left_border
+    while True:
+        current_x = current_x + 1
+        for y in range(bottom_border - 1 , top_border + 1):
+            if (current_x, y) in borders:
+                if (current_x, y + 1) not in borders:
+                    return (current_x, y+1)
+                else:
+                    break
+
+
+
+def is_rectangle_outside(outside, corner1, corner2):
     x1, y1 = corner1
     x2, y2 = corner2
     for i in range(min(x1,x2), max(x1,x2)):
@@ -63,23 +125,36 @@ def is_rectangle_inside(outside, corner1, corner2):
             return False
     return True
 
+def is_rectangle_inside(inside, corner1, corner2):
+    x1, y1 = corner1
+    x2, y2 = corner2
+    for i in range(min(x1, x2), max(x1, x2)):
+        if (i, y1) not in inside or (i, y2) not in inside:
+            return False
+    for i in range(min(y1, y2), max(y1, y2)):
+        if (x1, i) not in inside or (x2, i) not in inside:
+            return False
+    return True
 
-file = 'input.txt'
+if __name__ == '__main__':
+    file = 'input.txt'
 
-red_tiles = day9(file)
-borders = find_valid_borders(red_tiles)
-outside = find_outside(borders)
+    red_tiles = day9(file)
+    borders = find_valid_borders(red_tiles)
+    # outside = find_outside(borders)
+    inside = find_inside(borders)
+    valid = inside.union(borders)
 
-areas = {}
-for i in range(len(red_tiles)):
-    for j in range(i+1,len(red_tiles)):
-        tile1 = red_tiles[i]
-        tile2 = red_tiles[j]
-        if is_rectangle_inside(outside, tile1, tile2):
-            areas[tile1,tile2] = calculate_area(tile1, tile2)
+    areas = {}
+    for i in range(len(red_tiles)):
+        for j in range(i+1,len(red_tiles)):
+            tile1 = red_tiles[i]
+            tile2 = red_tiles[j]
+            if is_rectangle_inside(valid, tile1, tile2):
+                areas[tile1,tile2] = calculate_area(tile1, tile2)
 
 
 
-print(max(areas.values()))
+    print(max(areas.values()))
 
 # idea, check which corners are valid
