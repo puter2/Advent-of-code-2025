@@ -1,5 +1,5 @@
 from reader import day9
-from part2 import find_valid_borders, find_outside, find_first_point_inside, find_inside
+from part2 import find_valid_borders, find_outside, find_first_point_inside, find_inside, find_outside_border
 
 def display():
     global floor_map
@@ -26,12 +26,15 @@ display()
 # print(outside)
 # place_on_map(outside, 'O')
 # display()
-print(point_inside:=find_first_point_inside(valid_borders, 0, 0 , 11))
-place_on_map({point_inside}, 'O')
-display()
-print(inside:=find_inside(valid_borders))
-place_on_map(inside, 'O')
-display()
-valid_spots = inside.union(valid_borders)
-place_on_map(valid_spots, 'X')
+# print(point_inside:=find_first_point_inside(valid_borders, 0, 0 , 11))
+# place_on_map({point_inside}, 'O')
+# display()
+# print(inside:=find_inside(valid_borders))
+# place_on_map(inside, 'O')
+# display()
+# valid_spots = inside.union(valid_borders)
+# place_on_map(valid_spots, 'X')
+# display()
+outside_borders = find_outside_border(valid_borders, red_tiles)
+place_on_map(outside_borders, 'X')
 display()
