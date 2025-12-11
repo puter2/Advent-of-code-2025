@@ -111,5 +111,21 @@ def day9(path):
             )
     return red_tiles
 
+def day10(path):
+    machines = []
+    with open(path) as file:
+        for line in file.readlines():
+            machine_config = {}
+            end_lights = line.find(']')
+            start_joltage = line.find('{')
+            machine_config['lights'] = line[1:end_lights]
+            machine_config['joltage'] = line[start_joltage+1 : len(line)-1]
+            machine_config['buttons'] = []
+            for button in line[end_lights+2:start_joltage-1].split():
+                no_parenthases = button[1: len(button)-1]
+                machine_config['buttons'].append(tuple(int(num) for num in no_parenthases.split(',')))
+            machines.append(machine_config)
+    return machines
+
 if __name__=='__main__':
-    print(day9('day9/testinput.txt'))
+    print(day10('day10/testinput.txt'))
