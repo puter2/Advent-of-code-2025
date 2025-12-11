@@ -119,7 +119,7 @@ def day10(path):
             end_lights = line.find(']')
             start_joltage = line.find('{')
             machine_config['lights'] = line[1:end_lights]
-            machine_config['joltage'] = line[start_joltage+1 : len(line)-1]
+            machine_config['joltage'] = tuple(int(num) for num in line[start_joltage+1 : len(line)-1].replace('}', '').split(','))
             machine_config['buttons'] = []
             for button in line[end_lights+2:start_joltage-1].split():
                 no_parenthases = button[1: len(button)-1]

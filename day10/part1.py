@@ -1,5 +1,3 @@
-from traceback import print_tb
-
 from reader import day10
 
 def press_button(lights, button):
