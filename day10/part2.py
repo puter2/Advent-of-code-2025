@@ -1,36 +1,22 @@
 from reader import day10
+from solver import solve
 
-def press_button(joltage, button):
-    new_joltage = [j for j in joltage]
-    for i in button:
-        new_joltage[i] += 1
-    return tuple(new_joltage)
-
-def presses_to_configure(joltage, buttons, **kwargs):
-    start_position = tuple([0 for i in range(len(joltage))])
-    positions = {start_position:0}
-    to_test = [start_position]
-    while to_test:
-        position = to_test.pop(0)
-        press_number = positions[position]
-        for button in buttons:
-            joltage_after_pressing = press_button(position, button)
-            if positions.get(joltage_after_pressing) is None:
-                for i in range(len(joltage)):
-                    if joltage_after_pressing[i]>joltage[i]:
-                        continue
-                to_test.append(joltage_after_pressing)
-                positions[joltage_after_pressing] = press_number+1
-        if positions.get(joltage) is not None:
-            return positions.get(joltage)
-    return positions
-
+#different approach, use linear programming,
+#we want to minimize sum of button presses,
+#button presses are limited by joltege
+#example:
+#buttons: (3) (1,3) (2) (2,3) (0,2) (0,1) joltage: {3,5,4,7}
+#then constraints are as follows
+# x5 + x6 = 3
+# x2 + x6 = 5
+# x3 + x4 + x5 = 4
+# x1 + x2 + x4 = 7
 file = 'input.txt'
 machines = day10(file)
 total_presses = 0
 # print(press_button([0,0,0], (1,2)))
 for i, machine in enumerate(machines):
-    presses = presses_to_configure(**machine)
+    presses = solve(**machine)
     print(f'{presses} to configure this machine {i}')
     total_presses += presses
 print(total_presses)
