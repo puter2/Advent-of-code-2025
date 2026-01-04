@@ -127,5 +127,13 @@ def day10(path):
             machines.append(machine_config)
     return machines
 
+def day11(path):
+    connections = {}
+    with open(path) as file:
+        for line in file.readlines():
+            connections[line.split(':')[0]] = line.split(':')[1].split()
+    return connections
+
+
 if __name__=='__main__':
-    print(day10('day10/testinput.txt'))
+    print(day11('day11/testinput.txt'))
