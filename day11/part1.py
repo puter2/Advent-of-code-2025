@@ -1,6 +1,6 @@
 from reader import day11
 
-file = 'input.txt'
+file = 'testinput.txt'
 data = day11(file)
 
 started_paths = [['you']]
@@ -17,3 +17,15 @@ while started_paths:
 
 print(finished_paths)
 print(len(finished_paths))
+
+def find_backwards_neghborhoods(neighbors_list):
+    backwards = { key : [] for key in neighbors_list}
+    for key in neighbors_list:
+        for vert in neighbors_list[key]:
+            backwards[vert].append(key)
+
+    return backwards
+
+def find_all_paths_linear(neighbors_list, start, end):
+    processed_vertices = []
+    waiting_to_be_processed = [start]
